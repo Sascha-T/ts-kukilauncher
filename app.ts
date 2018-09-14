@@ -1,16 +1,16 @@
-import { app, BrowserWindow, Event, dialog, ipcMain as ipc } from "electron";
-import * as progress from "request-progress";
-import * as request from "request";
-import * as logger from "signale";
-import * as fetch from "node-fetch";
-import * as path from "path";
-import * as mkd from "mkdirp";
-import * as jfs from "fs-jetpack";
-import * as fs from "fs";
+import { app, BrowserWindow, Event, dialog, ipcMain as ipc } from 'electron';
+import * as progress from 'request-progress';
+import * as request from 'request';
+import * as logger from 'signale';
+import * as fetch from 'node-fetch';
+import * as path from 'path';
+import * as mkd from 'mkdirp';
+import * as jfs from 'fs-jetpack';
+import * as fs from 'fs';
 
-import * as ProgressBar from "electron-progressbar";
+import * as ProgressBar from 'electron-progressbar';
 
-import * as magnitude from "./utils/Magnitude";
+import * as magnitude from './utils/Magnitude';
 
 const bgcache = path.join(app.getPath("userData"), "background-cache");
 
@@ -20,7 +20,7 @@ const log: logger.Signale = logger.scope("Electron", "Init");
 
 let launcher: BrowserWindow = null;
 
-app.on("ready", async () => {
+app.on('ready', async () => {
   log.info("Checking Background cache!");
   await checkBackgroundCache();
   log.info("Loading Window");
@@ -31,20 +31,20 @@ app.on("ready", async () => {
     frame: false,
     resizable: false
   });
-  launcher["appdata"] = app.getPath("userData");
+  launcher['appdata'] = app.getPath("userData");
   launcher.loadFile("web/index.html");
 });
 
-ipc.on("close", () => {
+ipc.on('close', () => {
   launcher.hide();
 });
 
-ipc.on("exit", () => {
+ipc.on('exit', () => {
   launcher.close();
   process.exit(0);
 });
 
-ipc.on("minimize", () => {
+ipc.on('minimize', () => {
   launcher.minimize();
 });
 
@@ -94,29 +94,29 @@ function downloadFile(file: string): Promise<void> {
       maxValue: size,
       detail: ""
     });
-    let mg: string = magnitude.default(pg.getOptions().maxValue, "B", 2);
-    pg.on("progress", function(value) {
+    let mg: string = magnitude.default(pg.getOptions().maxValue, 'B', 2);
+    pg.on('progress', function(value) {
       time2 = Date.now();
       let speed: number = length / ((time2 - time1) / 1000);
       pg.detail = `${magnitude.default(
         value,
-        "B",
+        'B',
         2
-      )}/${mg} @ ${magnitude.default(speed, "B/s", 2)}`;
+      )}/${mg} @ ${magnitude.default(speed, 'B/s', 2)}`;
     });
 
     let url: string = fileserver + file;
     let res: fetch.Response = await fetch.default(url);
     let length = 0;
-    res.body.on("data", function(d: Buffer) {
+    res.body.on('data', function(d: Buffer) {
       length += d.length;
       pg.value = length;
-      //log.scope("Download").info(((length / size) * 100).toFixed(2));
+      //log.scope('Download').info(((length / size) * 100).toFixed(2));
     });
-    res.body.on("end", function() {
+    res.body.on('end', function() {
       resolve();
     });
-    res.body.on("error", err => {
+    res.body.on('error', err => {
       reject(err);
     });
     res.body.pipe(fs.createWriteStream(path.join(bgcache, file)));

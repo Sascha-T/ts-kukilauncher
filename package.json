@@ -19,6 +19,7 @@
         "mkdirp": "^0.5.1",
         "node-fetch": "^2.2.0",
         "request-progress": "^3.0.0",
+        "semantic-ui": "^2.3.3",
         "signale": "^1.2.1",
         "unzipper": "^0.9.3",
         "uuid": "^3.3.2"

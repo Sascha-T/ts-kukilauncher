@@ -165,6 +165,9 @@ modules.xml
 
 # Sascha's Additions
 
+# No, just no.
+builds
+
 # Prevent .vscode settings commited
 .vscode
 
@@ -173,3 +176,4 @@ modules.xml
 
 # Prevent compiled files from beeing committed
 *.js
+

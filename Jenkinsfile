@@ -16,7 +16,7 @@ pipeline {
 		stage('Build') {
             steps {
 		        sh 'npm i --dev'
-                sh 'tree node_modules'
+                sh 'tree -a node_modules'
                 sh './node_modules/.bin/tsc'
                 sh 'npm run package'
                 sh 'node build.js'

@@ -1,0 +1,87 @@
+import * as archiver from 'archiver';
+import * as fetch from 'node-fetch';
+
+const repo: string = "https://api.github.com/repos/kukiteam/dark-material/branches";
+
+export default async function getPacks() {
+    let branches = await getJson<Branch[]>(repo);
+    for(let i = 0; i < branches.length; i++) {
+        let url = await getJson<Commit>(branches[i].commit.url);
+        let archive = archiver('zip', {
+            zlib: { level: 9 }
+        });
+        let tree: Tree = await getJson<Tree>(url.commit.tree.url);
+        await recursiveTree('/', tree, archive);
+        archive.finalize();
+    }
+}
+
+async function recursiveTree(path: string = '/', tree: Tree, av: archiver.Archiver) {
+    for(let i = 0; i < tree.tree.length; i++) {
+        let entry: TreeEntry = tree.tree[i];
+        if(entry.type == FileType.File) {
+            let file: TreeEntryFile = await getJson<TreeEntryFile>("entry.url");
+            av.append(Buffer.from(file.content, file.encoding || 'base64'), {
+                name: path + entry.path,
+                date: new Date(),
+                mode: parseInt(entry.mode)
+            });
+        } else {
+            let dir: Tree = await getJson<Tree>(entry.url);
+            await recursiveTree(path + entry.path + '/', dir, av);
+        }
+    }
+}
+
+async function getJson<T>(url: string): Promise<T> {
+    let res: fetch.Response = await fetch.default(url);
+    return await res.json();
+}
+
+declare type Branch = {
+    name: string,
+    commit: {
+        sha: string,
+        url: string
+    }
+}
+
+declare type Commit = {
+    commit: {
+        tree: {
+            sha: string,
+            url: string
+        }
+    }
+    author: {},
+    url: string,
+    html_url: string
+}
+
+declare type Tree = {
+    sha: string,
+    url: string,
+    tree: [TreeEntry]
+}
+
+declare type TreeEntry = {
+    path: string,
+    mode: string,
+    type: FileType,
+    sha: string,
+    url: string
+}
+
+declare type TreeEntryFile = {
+    sha: string,
+    node_id: string,
+    size: number,
+    url: string,
+    content: string,
+    encoding: string
+}
+
+enum FileType {
+    File = "blob",
+    Folder = "tree"
+}

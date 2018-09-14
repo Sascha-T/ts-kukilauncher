@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KukiCraft</title>
+    <link rel="stylesheet" href="css/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/kuki.css">
+</head>
+<body>
+    <div class="top-bar">
+        <i class="cog icon left" id="settingsIcon"></i>
+        <i class="times icon right" id="closeIcon"></i>
+        <i class="window minimize icon right" id="minimizeIcon" style="font-size: 14px;"></i>
+    </div>
+
+    <img src="img/KukiTeam.svg" class="logo-image no-select" draggable="false">
+    <h1 class="logo-text no-select">KukiCraft</h1>
+
+    <div class="ui inverted container login segment" style="width: 300px">
+        <span id="messageText" style="color: red;"></span>
+        <div class="ui inverted input  login-field">
+            <input placeholder="Username" type="text" id="usernameField">
+        </div>
+        <div class="ui inverted input  login-field">
+            <input placeholder="Password" type="password" id="passwordField">
+        </div>
+        <button class="ui inverted primary button  login-button" id="loginButton">Login</button>
+    </div>
+
+    <div class="ui inverted indicating progress loader-progress" style="display: none;" data-value="1">
+        <div class="label" style="margin-top: -45px;"></div>
+        <div class="bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+
+    <video id="video" autoplay style="position: fixed;height: 100%;z-index: -1;top: 0;">
+    </video>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="lib/progressbar.min.js"></script>
+    <script src="lib/semantic.min.js"></script>
+    <script>
+
+
+        const {YggdrasilUtil} = require('./js/YggdrasilUtil');
+        const {MinecraftUtil} = require('./js/MinecraftUtil');
+        const {VersionHelper} = require('./js/VersionUtil');
+
+        const { ipcRenderer } = require('electron');
+
+        let $progress = $('.ui.progress');
+
+        $progress.progress({
+            total: 1
+        });
+
+        $('#closeIcon').click(() => ipcRenderer.send('exit'));
+        $('#minimizeIcon').click(() => ipcRenderer.send('minimize'));
+        $('#settingsIcon').click(() => ipcRenderer.send('settings'));
+
+        let $user  = $('#usernameField');
+        let $pass  = $('#passwordField');
+        let $login = $('#loginButton');
+
+        let $msg   = $('#messageText');
+
+        $login.click(async () => {
+            let success = await start();
+            if(!success) {
+                $login.prop("disabled", false);
+                $progress.progress('set percent', 0);
+                $progress.hide();
+            }
+        });
+
+        async function start() {
+            $msg.text('');
+            $progress.show();
+            if($user.val() === '' || $pass.val() === '')
+                return false;
+            let auth = await YggdrasilUtil.authenticate($user.val(), $pass.val());
+            if(!auth.result) {
+                $user.parent().addClass('error');
+                $pass.parent().addClass('error');
+                $msg.text(auth.errorMessage);
+                return false;
+            }
+            let version = await VersionHelper.getVersion("1.12.2");
+            let minecraft = new MinecraftUtil(version);
+            await minecraft.install((description, step) => {
+                $progress.progress({
+                    total: step,
+                    text: {
+                        active: description
+                    }
+                });
+                $progress.progress('set percent', 0);
+            }, command => $progress.progress(command));
+            $login.prop("disabled", true);
+            await minecraft.launch(auth);
+            ipcRenderer.send('close');
+            $login.prop("disabled", false);
+            return true;
+        }
+
+        $user.keypress(returnHandler);
+        $pass.keypress(returnHandler);
+        function returnHandler(e) {
+            $user.removeClass('error');
+            $pass.removeClass('error');
+            if(e.which === 13) {
+                let _user = $user.val() === '';
+                let _pass = $pass.val() === '';
+                console.log(_user, _pass);
+                if(_user)
+                    $user.select();
+                else if(_pass)
+                    $pass.select();
+                else
+                    $login.click();
+            }
+        }
+    </script>
+</body>
+</html>

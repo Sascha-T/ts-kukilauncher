@@ -16,7 +16,7 @@ pipeline {
 		stage('Build') {
             steps {
 		        sh 'npm i --dev'
-                sh './node_modules/tsc'
+                sh './node_modules/.bin/tsc'
                 sh 'npm run package'
                 sh 'node build.js'
                 archiveArtifacts artifacts: 'dist/*.tar.gz'

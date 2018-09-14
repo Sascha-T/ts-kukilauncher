@@ -10,7 +10,7 @@ import * as fs from 'fs';
 
 import * as ProgressBar from 'electron-progressbar'
 
-import * as magnitude from './Magnitude';
+import * as magnitude from './utils/Magnitude';
 
 const bgcache = path.join(app.getPath('userData'), 'background-cache');
 

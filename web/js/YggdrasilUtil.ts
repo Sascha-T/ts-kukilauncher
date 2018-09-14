@@ -89,9 +89,9 @@ class ValidAuthenticationResult implements AuthenticationResult {
         this.token = token;
         this.uuid = uuid;
 
-        this.errorCause = null;
-        this.errorMessage = null;
-        this.errorType = null;
+        this.errorCause = "";
+        this.errorMessage = "";
+        this.errorType = "";
 
         this.result = true;
     }
@@ -117,8 +117,8 @@ class ErrorAuthenticationResult implements AuthenticationResult {
 
         this.result = false;
 
-        this.name = null;
-        this.token = null;
-        this.uuid = null;
+        this.name = "";
+        this.token = "";
+        this.uuid = "";
     }
 }

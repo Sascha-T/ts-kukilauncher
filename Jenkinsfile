@@ -19,6 +19,7 @@ pipeline {
                 sh './node_modules/.bin/tsc'
                 sh 'npm run package'
                 sh 'node build.js'
+                sh 'tree node_modules'
                 archiveArtifacts artifacts: 'dist/*.tar.gz'
 		        archiveArtifacts artifacts: 'release/**/*.exe'
                 archiveArtifacts artifacts: 'release/**/*.msi'

@@ -163,3 +163,13 @@ modules.xml
 
 # End of https://www.gitignore.io/api/node,webstorm+all
 
+# Sascha's Additions
+
+# Prevent .vscode settings commited
+.vscode
+
+# Prevent maps beeing commited
+*.js.map
+
+# Prevent compiled files from beeing committed
+*.js

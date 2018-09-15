@@ -36,13 +36,31 @@
     </div>
 
     <video id="video" autoplay style="position: fixed;height: 100%;z-index: -1;top: 0;">
+
     </video>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="lib/progressbar.min.js"></script>
     <script src="lib/semantic.min.js"></script>
     <script>
+        const Background = require('./js/BackgroundUtil');
+        const $background = $('#video');
+        for(let i = 0; i < Background.files.length; i++)
+            $background.append(`<source type="${Background.filetype === ".webm" ? "video/webm" : "image/png"}" src="${Background.files[i]}">`);
 
+        document.querySelector("#video source:first-child").className = "active";
+
+        const video = $background[0];
+        video.addEventListener('ended', function(e) {
+            let active = document.querySelector("#video source.active");
+            let next = document.querySelector("#video source.active + source") || document.querySelector("#video source:first-child");
+
+            active.className = "";
+            next.className = "active";
+
+            video.src = next.src;
+            video.play();
+        });
 
         const {YggdrasilUtil} = require('./js/YggdrasilUtil');
         const {MinecraftUtil} = require('./js/MinecraftUtil');

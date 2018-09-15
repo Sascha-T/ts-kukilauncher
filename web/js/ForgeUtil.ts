@@ -98,11 +98,13 @@ export class MavenCentral implements MavenRepo {
         ["com.typesafe", "config", "1.2.1"],
         ["com.typesafe.akka", "akka-actor_2.11", "2.3.3"],
 
-        ["net.sf.trove4j", "trove4j", "3.0.3"]
+        ["net.sf.trove4j", "trove4j", "3.0.3"],
+        ["javax.vecmath", "vecmath", "1.5.2"]
+            //'javax.vecmath', name: 'vecmath', version: '1.5.2'
     ];
 }
 
-export class GeotoolkitMaven implements MavenRepo {
+export class GeotoolkitMaven implements MavenRepo { //Geotoolkit is dead
     url: string = "http://maven.geotoolkit.org";
     artifacts: Artifacts = [
         ["java3d", "vecmath", "1.5.2"]
@@ -135,7 +137,7 @@ export class ForgeFiles implements MavenRepo {
 
 const repositories: MavenRepos = [
     new MinecraftLibraries(),
-    new GeotoolkitMaven(),
+    //new GeotoolkitMaven(), //Geotoolkit is dead
     new MavenCentral(),
     new SpongeMaven(),
     new Maven1()

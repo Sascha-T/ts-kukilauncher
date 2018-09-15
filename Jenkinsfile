@@ -22,6 +22,11 @@ pipeline {
 
             }
         }
+	    stage('Debug') {
+		    steps {
+		    	sh 'tree -I node_modules'
+		    }
+	    }
 	    stage('Archiving') {
 		    steps {
 			    		   		        archiveArtifacts artifacts: 'release/**/*.exe'

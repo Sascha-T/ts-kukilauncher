@@ -25,6 +25,7 @@
         <div class="ui inverted input  login-field">
             <input placeholder="Password" type="password" id="passwordField">
         </div>
+        <input type="checkbox" hidden title="lastlogin" id="lastloginField">
         <button class="ui inverted primary button  login-button" id="loginButton">Login</button>
     </div>
 
@@ -66,6 +67,14 @@
         const {MinecraftUtil} = require('./js/MinecraftUtil');
         const {VersionHelper} = require('./js/VersionUtil');
 
+        YggdrasilUtil.checkLastlogin().then(last => {
+            if(!last)
+                return;
+            $user.val(last.email);
+            $pass.val("________");
+            $last.attr("checked", "checked")
+        });
+
         const { ipcRenderer } = require('electron');
 
         let $progress = $('.ui.progress');
@@ -81,6 +90,8 @@
         let $user  = $('#usernameField');
         let $pass  = $('#passwordField');
         let $login = $('#loginButton');
+
+        let $last = $('#lastloginField');
 
         let $msg   = $('#messageText');
 
@@ -98,7 +109,7 @@
             $progress.show();
             if($user.val() === '' || $pass.val() === '')
                 return false;
-            let auth = await YggdrasilUtil.authenticate($user.val(), $pass.val());
+            let auth = await YggdrasilUtil.login($user.val(), $pass.val(), $last.prop('checked'));
             if(!auth.result) {
                 $user.parent().addClass('error');
                 $pass.parent().addClass('error');

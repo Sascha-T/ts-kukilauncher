@@ -2,8 +2,7 @@ import { remote } from 'electron';
 import * as sys from 'os';
 
 export enum Endpoints {
-    MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest.json",
-    AUTHENTICATION = "https://authserver.mojang.com/authenticate"
+    MANIFEST = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
 }
 
 export enum Paths {

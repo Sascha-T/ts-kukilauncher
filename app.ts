@@ -27,12 +27,10 @@ app.on('ready', async () => {
 ipc.on('close', () => {
   launcher.hide();
 });
-
 ipc.on('exit', () => {
   launcher.close();
   process.exit(0);
 });
-
 ipc.on('minimize', () => {
   launcher.minimize();
 });

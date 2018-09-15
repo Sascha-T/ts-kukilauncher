@@ -29,8 +29,8 @@ pipeline {
 	    }
 	    stage('Archiving') {
 		    steps {
-			    		   		        archiveArtifacts artifacts: 'release/**/*.exe'
-                archiveArtifacts artifacts: 'release/**/*.msi' 
+				archiveArtifacts artifacts: 'release/installer32/Setup.exe'
+			    archiveArtifacts artifacts: 'release/installer64/Setup.exe'
 		    }
 	    }
     }

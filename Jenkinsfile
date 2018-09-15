@@ -19,10 +19,13 @@ pipeline {
 		sh 'tsc'
                 sh 'npm run package'
                 sh 'node build.js'
-		        archiveArtifacts artifacts: 'release/**/*.exe'
-                archiveArtifacts artifacts: 'release/**/*.msi'
+
             }
         }
+	    stage('Archiving') {
+		   		        archiveArtifacts artifacts: 'release/**/*.exe'
+                archiveArtifacts artifacts: 'release/**/*.msi' 
+	    }
     }
     post {
         always {

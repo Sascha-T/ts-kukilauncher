@@ -23,8 +23,10 @@ pipeline {
             }
         }
 	    stage('Archiving') {
-		   		        archiveArtifacts artifacts: 'release/**/*.exe'
+		    steps {
+			    		   		        archiveArtifacts artifacts: 'release/**/*.exe'
                 archiveArtifacts artifacts: 'release/**/*.msi' 
+		    }
 	    }
     }
     post {

@@ -43,7 +43,7 @@ pipeline {
         unstable {
             echo 'Unstable.'
         }
-        failure {´
+        failure {
             sh 'tree'
             echo 'Failed!'
         }

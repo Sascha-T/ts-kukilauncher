@@ -1,6 +1,6 @@
 # KukiCraft Launcher
 
-[![download-nav]](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastUnsuccessfulBuild/)
+[![download-nav]](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/)
 [![discord]](https://discord.gg/7GqtS9Z)
 ![style]
 ![poweredby]

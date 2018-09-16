@@ -15,16 +15,14 @@ pipeline {
         }
 		stage('Build') {
             steps {
-		sh 'npm i --dev'
-		sh 'tsc'
-                sh 'npm run package'
-                sh 'node build.js'
-
+		        sh 'npm i --dev'
+		        sh 'tsc'
             }
         }
-	    stage('Debug') {
+	    stage('Packaging') {
 		    steps {
-		    	sh 'tree -I node_modules'
+		    	sh 'npm run package'
+                sh 'node package.js'
 		    }
 	    }
 	    stage('Archiving') {

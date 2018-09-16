@@ -1,3 +1,5 @@
+import { resolve } from "url";
+
 let windowsInstaller = require("electron-winstaller");
 let redhatInstaller = require("electron-installer-redhat");
 let debianInstaller = require("electron-installer-debian");
@@ -26,20 +28,40 @@ async function main() {
       console.log("Win64 Build done!");
     });
 
-  let debianPromise = debianInstaller({
-    src: "builds/kukilauncher-linux-x64/",
-    dest: "./release/debian/",
-    arch: "x86_64"
-  }).then(success => {
-    console.log("Debian Build done!");
+  let debianPromise = new Promise((res, rej) => {
+    debianInstaller(
+      {
+        src: "builds/kukilauncher-linux-x64/",
+        dest: "./release/debian/",
+        arch: "x86_64"
+      },
+      err => {
+        if (err) {
+          rej(err);
+          process.exit(1);
+        }
+        console.log("Successfully created built the debian package!");
+        res();
+      }
+    );
   });
 
-  let redhatPromise = redhatInstaller({
-    src: "builds/kukilauncher-linux-x64/",
-    dest: "./release/redhat/",
-    arch: "x86_64"
-  }).then(success => {
-    console.log("RedHat Build done!");
+  let redhatPromise = new Promise((res, rej) => {
+    redhatInstaller(
+      {
+        src: "builds/kukilauncher-linux-x64/",
+        dest: "./release/redhat/",
+        arch: "x86_64"
+      },
+      err => {
+        if (err) {
+          rej(err);
+          process.exit(1);
+        }
+        console.log("Successfully created built the debian package!");
+        res();
+      }
+    );
   });
   let promises = [
     resultPromise32,

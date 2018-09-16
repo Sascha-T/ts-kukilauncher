@@ -25,7 +25,12 @@ pipeline {
                 sh 'node package.js'
 		    }
 	    }
-	    stage('Archiving') {
+        stage('Debugging') {
+		    steps {
+		    	sh 'tree'
+		    }
+	    }
+        stage('Archiving') {
 		    steps {
 				archiveArtifacts artifacts: 'release/installer32/Setup.exe'
 			    archiveArtifacts artifacts: 'release/installer64/Setup.exe'

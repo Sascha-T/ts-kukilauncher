@@ -37,5 +37,6 @@
         "electron-winstaller": "^2.6.4"
     },
     "summary": "KukiCraft Minecraft Modpack Game Launcher",
-    "license": "MIT"
+    "license": "MIT",
+    "description": "KukiCraft Minecraft Modpack Game Launcher"
 }

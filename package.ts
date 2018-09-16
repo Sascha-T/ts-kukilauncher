@@ -40,7 +40,7 @@ async function main() {
           console.error(err);
           rej(err);
         }
-        console.log("Successfully created built the debian package!");
+        console.log("Successfully built the debian package!");
         res();
       }
     );
@@ -58,7 +58,7 @@ async function main() {
           console.error(err);
           rej(err);
         }
-        console.log("Successfully created built the debian package!");
+        console.log("Successfully built the debian package!");
         res();
       }
     );

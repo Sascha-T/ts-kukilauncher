@@ -5,6 +5,7 @@
 ![poweredby]
 [![Jenkins](https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/)
 
+## Downloads
 
 [![Download Windows_64Bit](https://img.shields.io/badge/Download-Windows_64Bit-blue.svg?style=for-the-badge)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/artifact/release/installer64/Setup.exe)
  

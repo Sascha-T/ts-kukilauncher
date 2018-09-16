@@ -34,6 +34,7 @@ pipeline {
     }
     post {
         always {
+            sh 'tree'
             echo 'Done.'
             deleteDir() 
         }

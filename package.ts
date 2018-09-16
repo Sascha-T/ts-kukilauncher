@@ -58,7 +58,7 @@ async function main() {
           console.error(err);
           rej(err);
         }
-        console.log("Successfully built the debian package!");
+        console.log("Successfully built the redhat package!");
         res();
       }
     );

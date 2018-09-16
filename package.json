@@ -35,5 +35,7 @@
         "electron-installer-debian": "^0.8.1",
         "electron-installer-redhat": "^0.5.0",
         "electron-winstaller": "^2.6.4"
-    }
+    },
+    "summary": "KukiCraft Minecraft Modpack Game Launcher",
+    "license": "MIT"
 }

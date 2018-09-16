@@ -44,7 +44,6 @@ pipeline {
             echo 'Unstable.'
         }
         failure {
-            sh 'tree'
             echo 'Failed!'
         }
         changed {

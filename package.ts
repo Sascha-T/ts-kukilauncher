@@ -37,8 +37,8 @@ async function main() {
       },
       err => {
         if (err) {
+          console.error(err);
           rej(err);
-          process.exit(1);
         }
         console.log("Successfully created built the debian package!");
         res();
@@ -55,8 +55,8 @@ async function main() {
       },
       err => {
         if (err) {
+          console.error(err);
           rej(err);
-          process.exit(1);
         }
         console.log("Successfully created built the debian package!");
         res();

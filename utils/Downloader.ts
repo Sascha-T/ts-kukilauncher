@@ -1,7 +1,8 @@
-import * as ProgressBar from 'electron-progressbar';
+import * as ProgressBar from "electron-progressbar";
 import * as magnitude from "./Magnitude";
+import * as crypto from "crypto";
 import * as fetch from "node-fetch";
-import * as mkdir from 'mkdirp';
+import * as mkdir from "mkdirp";
 import * as path from "path";
 import * as jfs from "fs-jetpack";
 import * as fs from "fs";
@@ -16,7 +17,8 @@ const bgcache = path.join(app.getPath("userData"), "background-cache");
 const log = signale.scope("Electron", "Download");
 
 declare type File = {
-    size: number;
+    sha1: string,
+    size: number
 };
 
 export enum FileType {
@@ -35,6 +37,21 @@ export declare type DownloadResult = {
 }
 
 const xfs = jfs.cwd(app.getPath("userData"));
+
+export async function checkBackgroundFiles(): Promise<void> {
+    let files: string[] = await xfs.listAsync('background-cache');
+    for(let i = 0; i < files.length; i++) {
+        let file: File = await getFile(files[i]);
+        let data: Buffer = await xfs.readAsync('background-cache/' + files[i], "buffer");
+        let hash: crypto.Hash = crypto.createHash('sha1');
+        hash.update(data);
+        log.info(files[i]);
+        let digest: Buffer = hash.digest();
+        log.info(`${digest.toString('hex')} ?= ${file.sha1}`);
+        if(digest.toString('hex') !== file.sha1)
+            await xfs.removeAsync('background-cache/' + files[i]);
+    }
+}
 
 export async function checkBackgroundCache(): Promise<DownloadResult> {
     mkdir(bgcache);
@@ -80,7 +97,7 @@ const fileServer: string = "https://res.sascha-t.de/kukicraft/launcher/";
 
 export function downloadFile(file: string): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
-        let size: number = await getFileSize(file);
+        let size: number = (await getFile(file)).size;
 
         let time1: number = Date.now();
         let time2: number = time1;
@@ -105,6 +122,7 @@ export function downloadFile(file: string): Promise<void> {
         let url: string = fileServer + file;
         let res: fetch.Response = await fetch.default(url);
         let length = 0;
+
         res.body.on('data', function(d: Buffer) {
             length += d.length;
             pg.value = length;
@@ -125,13 +143,16 @@ async function getFiles(type: FileType): Promise<string[]> {
     return Object.keys(data).filter(value => value.indexOf(type) !== -1);
 }
 
-async function getFileSize(filename: string): Promise<number> {
+async function getFile(filename: string): Promise<File> {
     let res: fetch.Response = await fetch.default(fileServer + "files.json");
     let data: object = await res.json();
     let keys: string[] = Object.keys(data);
     for (let i = 0; i < keys.length; i++) {
         let file: File = data[keys[i]];
-        if (keys[i] == filename) return file.size;
+        if (keys[i] == filename) return file;
     }
-    return -1;
+    return {
+        sha1: "0000000000000000000000000000000000000000",
+        size: -1
+    };
 }

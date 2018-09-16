@@ -9,6 +9,7 @@ let launcher: BrowserWindow = null;
 
 app.on('ready', async () => {
   log.info("Checking Background cache!");
+  await Downloader.checkBackgroundFiles();
   let backgrounds: Downloader.DownloadResult = await Downloader.checkBackgroundCache();
   log.info("Loading Window");
   launcher = new BrowserWindow({

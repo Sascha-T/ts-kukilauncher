@@ -1,17 +1,10 @@
 import {Endpoints, Paths} from "./Constants";
 import * as crypto from 'crypto';
 import * as fetch from 'node-fetch';
-import * as path from 'path';
 import * as sys from 'os';
 import * as fs from 'fs-jetpack';
-import * as log from 'signale';
 
 const xfs = fs.cwd(Paths.APPDATA.toString());
-
-log.info(getUniqueIdentifier());
-log.info(getUniqueIdentifier());
-log.info(getUniqueIdentifier());
-log.info(getUniqueIdentifier());
 
 export class YggdrasilUtil {
 
@@ -23,7 +16,6 @@ export class YggdrasilUtil {
             let lastlogin: string = await xfs.readAsync("lastlogin");
             if (lastlogin) {
                 let data: string = Buffer.from(lastlogin, 'base64').toString('utf8');
-                log.info(data);
                 this.lastLogin = JSON.parse(data);
                 this.hasLastLogin = true;
                 return this.lastLogin;

@@ -29,6 +29,8 @@ pipeline {
 		    steps {
 				archiveArtifacts artifacts: 'release/installer32/Setup.exe'
 			    archiveArtifacts artifacts: 'release/installer64/Setup.exe'
+                archiveArtifacts artifacts: 'release/debian/*.deb'
+                archiveArtifacts artifacts: 'release/redhat/*.rpm'
 		    }
 	    }
     }

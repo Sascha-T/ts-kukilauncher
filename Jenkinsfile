@@ -25,11 +25,6 @@ pipeline {
                 sh 'node package.js'
 		    }
 	    }
-        stage('Debugging') {
-		    steps {
-		    	sh 'tree'
-		    }
-	    }
         stage('Archiving') {
 		    steps {
 				archiveArtifacts artifacts: 'release/installer32/Setup.exe'
@@ -48,7 +43,8 @@ pipeline {
         unstable {
             echo 'Unstable.'
         }
-        failure {
+        failure {´
+            sh 'tree'
             echo 'Failed!'
         }
         changed {

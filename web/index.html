@@ -139,6 +139,10 @@
         function returnHandler(e) {
             $user.removeClass('error');
             $pass.removeClass('error');
+            if($last.attr('checked')) {
+                $pass.val('');
+                $last.attr('checked', false);
+            }
             if(e.which === 13) {
                 let _user = $user.val() === '';
                 let _pass = $pass.val() === '';

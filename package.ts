@@ -1,5 +1,6 @@
 let windowsInstaller = require("electron-winstaller");
-var linuxInstaller = require("electron-linux-installer");
+let redhatInstaller = require("electron-installer-redhat");
+let debianInstaller = require("electron-installer-debian");
 async function main() {
   let resultPromise32 = windowsInstaller
     .createWindowsInstaller({
@@ -25,20 +26,18 @@ async function main() {
       console.log("Win64 Build done!");
     });
 
-  let debianPromise = linuxInstaller({
-    src: "builds/kukilauncher-linux-x64/", // source location
-    dest: "./release/debian/", // destination of the installer
-    arch: "x86_64", // x86_x64 would work both debian and rpm cause controllers are here.
-    for: "debian" // can be debian or redhat
+  let debianPromise = debianInstaller({
+    src: "builds/kukilauncher-linux-x64/",
+    dest: "./release/debian/",
+    arch: "x86_64"
   }).then(success => {
     console.log("Debian Build done!");
   });
 
-  let redhatPromise = linuxInstaller({
-    src: "builds/kukilauncher-linux-x64/", // source location
-    dest: "./release/redhat/", // destination of the installer
-    arch: "x86_64", // x86_x64 would work both debian and rpm cause controllers are here.
-    for: "redhat" // can be debian or redhat
+  let redhatPromise = redhatInstaller({
+    src: "builds/kukilauncher-linux-x64/",
+    dest: "./release/redhat/",
+    arch: "x86_64"
   }).then(success => {
     console.log("RedHat Build done!");
   });

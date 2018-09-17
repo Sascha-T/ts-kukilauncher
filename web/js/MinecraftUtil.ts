@@ -1,9 +1,10 @@
 import {MinecraftVersion} from "./VersionUtil";
 import {DownloadHelper} from "./DownloadUtil";
-import * as jfs from 'fs-jetpack';
-import * as log from 'signale';
+import * as fetch from 'node-fetch';
 import * as path from 'path';
 import * as uuid from 'uuid';
+import * as jfs from 'fs-jetpack';
+import * as log from 'signale';
 import * as ofs from 'fs';
 import {remote, ipcRenderer as ipc} from 'electron';
 import {SystemHelper, Paths} from "./Constants";
@@ -102,9 +103,9 @@ export class MinecraftUtil {
         await this.generateClasspath(StepCallback.create("Loading Classpath", step, update));
     }
 
+    // noinspection JSMethodCanBeStatic
     private async installResourcePacks(c: StepCallback): Promise<void> {
         c.steps(1);
-        //TODO Video, Mod Selection, Gui (Images?), Settings, Login
         c.next();
     }
 
@@ -181,7 +182,13 @@ export class MinecraftUtil {
         c.next();
         await DownloadHelper.checkOrDownload(manifest["assetIndex"]["url"], `assets/indexes/${this.version.id}.json`, manifest["assetIndex"]["sha1"]);
         c.next();
-        await DownloadHelper.download('https://raw.githubusercontent.com/kukiteam/kukicraft/master/manifest.json', `versions/${this.version.id}/kuki.json`);
+        let result: boolean = false;
+        if(await fs.existsAsync(`versions/${this.version.id}/kuki.json`) !== 'file') {
+            let res: fetch.Response = await fetch.default('https://raw.githubusercontent.com/kukiteam/kukicraft/master/manifest.json');
+            //TODO
+        }
+        if(!result)
+            await DownloadHelper.download('https://raw.githubusercontent.com/kukiteam/kukicraft/master/manifest.json', `versions/${this.version.id}/kuki.json`);
         c.next();
         let libs: MinecraftLibrary[] = [];
 

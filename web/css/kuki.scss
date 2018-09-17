@@ -13,12 +13,19 @@
   text-shadow: stroke($stroke, $color);
 }
 
+.bg {
+  position: fixed;
+  display: none;
+  height: 100%;
+  z-index: -1;
+  top: 0;
+}
+
 .top-bar {
   background-color: #212121;
   color: #FFF;
   height: 24px;
 
-  //position: fixed;
   width: 100%;
   top: 0;
 

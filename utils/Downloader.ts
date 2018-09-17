@@ -23,7 +23,7 @@ declare type File = {
 
 export enum FileType {
     Video = ".webm",
-    Image = ".png"
+    Image = ".jpg"
 }
 
 enum CacheDescriptor {
@@ -40,6 +40,8 @@ const xfs = jfs.cwd(app.getPath("userData"));
 
 export async function checkBackgroundFiles(): Promise<void> {
     let files: string[] = await xfs.listAsync('background-cache');
+    if(!files)
+        return;
     for(let i = 0; i < files.length; i++) {
         let file: File = await getFile(files[i]);
         let data: Buffer = await xfs.readAsync('background-cache/' + files[i], "buffer");

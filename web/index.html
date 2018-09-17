@@ -36,32 +36,46 @@
         </div>
     </div>
 
-    <video id="video" autoplay style="position: fixed;height: 100%;z-index: -1;top: 0;">
-
-    </video>
+    <video id="video" autoplay class="bg"></video>
+    <img id="slides" src="" class="bg">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="lib/progressbar.min.js"></script>
     <script src="lib/semantic.min.js"></script>
     <script>
         const Background = require('./js/BackgroundUtil');
-        const $background = $('#video');
-        for(let i = 0; i < Background.files.length; i++)
-            $background.append(`<source type="${Background.filetype === ".webm" ? "video/webm" : "image/png"}" src="${Background.files[i]}">`);
+        const $background = Background.filetype === ".webm" ? $('#video') : $('#slides');
 
-        document.querySelector("#video source:first-child").className = "active";
+        $background.show();
 
-        const video = $background[0];
-        video.addEventListener('ended', function(e) {
-            let active = document.querySelector("#video source.active");
-            let next = document.querySelector("#video source.active + source") || document.querySelector("#video source:first-child");
+        if(Background.filetype === ".webm") {
+            for(let i = 0; i < Background.files.length; i++)
+                $background.append(`<source type="video/webm" src="${Background.files[i]}">`);
 
-            active.className = "";
-            next.className = "active";
+            document.querySelector("#video source:first-child").className = "active";
+            
+            const video = $background[0];
+            video.addEventListener('ended', function(e) {
+                let active = document.querySelector("#video source.active");
+                let next = document.querySelector("#video source.active + source") || document.querySelector("#video source:first-child");
 
-            video.src = next.src;
-            video.play();
-        });
+                active.className = "";
+                next.className = "active";
+
+                video.src = next.src;
+                video.play();
+            });
+        } else {
+            let images = Background.files;
+            let i = 0;
+            $background.attr('src', images[i]);
+            setInterval(() => {
+                $background.attr('src', images[i]);
+                i++;
+                if(i >= images.length)
+                     i = 0;
+            }, 5000);
+        }
 
         const {YggdrasilUtil} = require('./js/YggdrasilUtil');
         const {MinecraftUtil} = require('./js/MinecraftUtil');

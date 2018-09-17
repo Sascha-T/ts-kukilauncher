@@ -2,7 +2,7 @@
 
 [![discord]](https://discord.gg/7GqtS9Z)
 ![style]
-![poweredby]
+[![poweredby]](https://electron.io)
 [![Jenkins](https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/)
 
 ## Downloads

@@ -37,6 +37,8 @@ pipeline {
                 archiveArtifacts artifacts: 'release/redhat/*.rpm'
                 archiveArtifacts artifacts: 'release/linux-generic-ia32.tar.gz'
                 archiveArtifacts artifacts: 'release/linux-generic-x64.tar.gz'
+                archiveArtifacts artifacts: 'release/linux-generic-arm64.tar.gz'
+                archiveArtifacts artifacts: 'release/linux-generic-arm7l.tar.gz'
 		    }
 	    }
     }

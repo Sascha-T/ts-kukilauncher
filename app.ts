@@ -35,6 +35,9 @@ ipc.on('exit', () => {
 ipc.on('minimize', () => {
   launcher.minimize();
 });
+ipc.on('settings', () => {
+
+});
 
 app.on('window-all-closed', () => {
     app.quit()

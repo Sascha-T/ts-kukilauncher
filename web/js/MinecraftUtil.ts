@@ -106,6 +106,7 @@ export class MinecraftUtil {
     // noinspection JSMethodCanBeStatic
     private async installResourcePacks(c: StepCallback): Promise<void> {
         c.steps(1);
+        // @Tako isn't done yet
         c.next();
     }
 
@@ -123,6 +124,22 @@ export class MinecraftUtil {
             log.scope("Download", "Mods").info(mod.projectid);
             await DownloadHelper.checkOrDownload(Mods.getUrl(mod), `mods/${mod.projectid}.jar`, mod.sha1);
             c.next();
+        }
+
+        let files: string[] = await fs.listAsync('mods/');
+        if(!files)
+            return;
+        for(let i = 0; i < files.length; i++) {
+            let file: string = files[i];
+            let found: boolean = false;
+            for(let j = 0; j < mods.length; j++)
+                if(`${mods[j].projectid}.jar` === file) {
+                    found = true;
+                    break;
+                }
+            if(found)
+                continue;
+            await fs.removeAsync(`mods/${file}`);
         }
     }
 
@@ -182,13 +199,7 @@ export class MinecraftUtil {
         c.next();
         await DownloadHelper.checkOrDownload(manifest["assetIndex"]["url"], `assets/indexes/${this.version.id}.json`, manifest["assetIndex"]["sha1"]);
         c.next();
-        let result: boolean = false;
-        if(await fs.existsAsync(`versions/${this.version.id}/kuki.json`) !== 'file') {
-            let res: fetch.Response = await fetch.default('https://raw.githubusercontent.com/kukiteam/kukicraft/master/manifest.json');
-            //TODO
-        }
-        if(!result)
-            await DownloadHelper.download('https://raw.githubusercontent.com/kukiteam/kukicraft/master/manifest.json', `versions/${this.version.id}/kuki.json`);
+        await DownloadHelper.download('https://raw.githubusercontent.com/kukiteam/kukicraft/master/manifest.json', `versions/${this.version.id}/kuki.json`);
         c.next();
         let libs: MinecraftLibrary[] = [];
 
@@ -310,7 +321,6 @@ export class StepCallback {
 
 }
 
-export declare type StepProgressCallback = (description: string) => void;
 export declare type SetStepCallback = (description: string, step: number) => void;
 export declare type UpdateCallback = (command: string) => void;
 export declare type Callback = () => void;

@@ -23,6 +23,10 @@ pipeline {
 		    steps {
 		    	sh 'npm run package'
                 sh 'node package.js'
+                sh 'tar -zcvf release/linux-generic-ia32.tar.gz builds/kukilauncher-linux-ia32'
+                sh 'tar -zcvf release/linux-generic-x64.tar.gz builds/kukilauncher-linux-x64'
+                sh 'tar -zcvf release/linux-generic-arm64.tar.gz builds/kukilauncher-linux-arm64'
+                sh 'tar -zcvf release/linux-generic-arm7l.tar.gz builds/kukilauncher-linux-armv7l'
 		    }
 	    }
         stage('Archiving') {
@@ -31,6 +35,8 @@ pipeline {
 			    archiveArtifacts artifacts: 'release/installer64/Setup.exe'
                 archiveArtifacts artifacts: 'release/debian/*.deb'
                 archiveArtifacts artifacts: 'release/redhat/*.rpm'
+                archiveArtifacts artifacts: 'release/linux-generic-ia32.tar.gz'
+                archiveArtifacts artifacts: 'release/linux-generic-x64.tar.gz'
 		    }
 	    }
     }

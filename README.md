@@ -15,6 +15,10 @@
 
 [![Download ArchBased](https://img.shields.io/badge/Download-Arch_Based-blue.svg?style=for-the-badge)](https://res.sascha-t.de/kukicraft/launcher/PKGBUILD)  
 
+[![Download Linux_64Bit](https://img.shields.io/badge/Download-Linux_64Bit-blue.svg?style=for-the-badge)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/artifact/release/linux-generic-x64.tar.gz)
+
+[![Download Linux_32Bit](https://img.shields.io/badge/Download-Linux_32Bit-blue.svg?style=for-the-badge)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/artifact/release/linux-generic-ia32.tar.gz)
+
 [![Download RPMBased](https://img.shields.io/badge/Download-RPM_Based-blue.svg?style=for-the-badge)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/artifact/release/redhat/kukilauncher-2.0.0.x86_64.rpm)  
 
 [discord]: https://img.shields.io/badge/chat-Discord-blue.svg

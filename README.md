@@ -13,7 +13,7 @@
 
 [![Download DebianBased](https://img.shields.io/badge/Download-Debian_Based-blue.svg?style=for-the-badge)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/artifact/release/debian/kukilauncher_2.0.0_x86_64.deb)  
 
-[![Download ArchBased](https://img.shields.io/badge/Download-Arch_Based-blue.svg?style=for-the-badge)](https://git.io/fA1bT)  
+[![Download ArchBased](https://img.shields.io/badge/Download-Arch_Based-blue.svg?style=for-the-badge)](https://res.sascha-t.de/kukicraft/launcher/PKGBUILD)  
 
 [![Download RPMBased](https://img.shields.io/badge/Download-RPM_Based-blue.svg?style=for-the-badge)](https://web.sascha-t.de/jenkins/job/KukiTeam/job/ts-kukilauncher/job/master/lastSuccessfulBuild/artifact/release/redhat/kukilauncher-2.0.0.x86_64.rpm)  
 

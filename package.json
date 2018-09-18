@@ -5,7 +5,8 @@
     "scripts": {
         "start": "electron .",
         "startcompile": "tsc && npm start",
-        "package": "electron-packager . --all --prune=true --out=builds/ --ignore=\"/(builds|release)\" --asar --platform=linux --arch=x64",
+        "package": "electron-packager . --all --prune=true --out=builds/ --ignore=\"/(builds|release)\" --asar",
+        "apackage": "electron-packager . --all --prune=true --out=builds/ --ignore=\"/(builds|release)\" --asar --platform=linux --arch=x64",
         "tsc": "tsc"
     },
     "dependencies": {

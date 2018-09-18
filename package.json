@@ -34,7 +34,8 @@
         "@types/signale": "^1.2.0",
         "@types/unzipper": "^0.9.0",
         "@types/uuid": "^3.4.4",
-        "electron": "^2.0.8"
+        "electron": "^2.0.8",
+        "typescript": "^3.0.3"
     },
     "ciDependencies": {
         "electron-installer-debian": "^0.8.1",

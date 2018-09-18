@@ -21,6 +21,7 @@ pipeline {
         }
 	    stage('Packaging') {
 		    steps {
+                sh 'node ci-ins.js'
 		    	sh 'npm run package'
                 sh 'node package.js'
                 sh 'tar -zcvf release/linux-generic-ia32.tar.gz builds/kukilauncher-linux-ia32'

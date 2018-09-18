@@ -24,7 +24,8 @@
         "request-progress": "^3.0.0",
         "signale": "^1.2.1",
         "unzipper": "^0.9.3",
-        "uuid": "^3.3.2"
+        "uuid": "^3.3.2",
+        "typescript": "^3.0.3"
     },
     "devDependencies": {
         "@types/archiver": "^2.1.2",
@@ -34,8 +35,7 @@
         "@types/signale": "^1.2.0",
         "@types/unzipper": "^0.9.0",
         "@types/uuid": "^3.4.4",
-        "electron": "^2.0.8",
-        "typescript": "^3.0.3"
+        "electron": "^2.0.8"
     },
     "ciDependencies": {
         "electron-installer-debian": "^0.8.1",

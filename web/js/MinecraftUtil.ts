@@ -41,8 +41,6 @@ export class MinecraftUtil {
         let cp: string = this.classpath.join(SystemHelper.classpathSeparatorBecauseJavaIsFuckingStupid());
         let args: string[] = [];
         args.push('-Djava.library.path="' + this.native + '"');
-        args.push('-Xmx' + this.config["game"].Xmx);
-        args.push('-Xms' + this.config["game"].Xms);
         args.push('-cp');
         cp += ':/home/pascal/.config/kukilauncher/minecraft/minecraftforge.jar';
         args.push(`"${cp}"`);

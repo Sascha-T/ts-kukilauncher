@@ -1,0 +1,81 @@
+body {
+  padding: 0!important;
+  margin-top: 0!important;
+}
+
+.field > input {
+  background-color: #222!important;
+  color: #FFF!important;
+}
+
+label {
+  color: #FFF!important;
+}
+
+.tab-content {
+  padding-bottom: 45px;
+}
+
+.button-box {
+  bottom: 0;
+  width:100%;
+  position: fixed;
+  padding-bottom: 5px;
+  background-color: #1B1C1D;
+}
+
+.checkbox {
+  position: absolute;
+  right: 5px;
+  z-index: 0;
+}
+
+.settings-content {
+  padding: 5px;
+}
+
+#settingsMenu {
+  margin-top: 0;
+  color: #FFF;
+  width: 100%;
+
+  z-index: 10;
+  position: sticky;
+  top: 0;
+  background-color: #1b1c1d;
+
+  > .active.item {
+    border-color: #0d71bb;
+  }
+
+  > .item {
+    color: #0d71bb;
+  }
+}
+
+.top-bar {
+  position: absolute;
+  z-index: -1;
+  background-color: #212121;
+  color: #FFF;
+  height: 40px;
+
+  width: 100%;
+  top: 0;
+
+  .icon {
+    height: 100%;
+    font-size: 17px;
+    margin-top: 1.5px;
+    margin-left: 1.5px;
+  }
+
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}

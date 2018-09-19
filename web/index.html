@@ -98,7 +98,7 @@
 
         $('#closeIcon').click(() => ipcRenderer.send('exit'));
         $('#minimizeIcon').click(() => ipcRenderer.send('minimize'));
-        $('#settingsIcon').click(() => ipcRenderer.send('settings'));
+        $('#settingsIcon').click(async () => ipcRenderer.send('settings', await minecraft.getMods()));
 
         let $user  = $('#usernameField');
         let $pass  = $('#passwordField');
@@ -117,6 +117,10 @@
             }
         });
 
+        let version;
+        VersionHelper.getVersion("1.12.2").then(v => version = v).then(() => minecraft = new MinecraftUtil(version));
+        let minecraft;
+
         async function start() {
             $msg.text('');
             $progress.show();
@@ -129,8 +133,7 @@
                 $msg.text(auth.errorMessage);
                 return false;
             }
-            let version = await VersionHelper.getVersion("1.12.2");
-            let minecraft = new MinecraftUtil(version);
+
             await minecraft.install((description, step) => {
                 $progress.progress({
                     total: step,

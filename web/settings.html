@@ -5,9 +5,139 @@
     <title>KukiCraft - Settings</title>
     <script src="lib/jquery.min.js"></script>
     <link rel="stylesheet" href="css/semantic.min.css">
-    <link rel="stylesheet" href="css/kuki.css">
+    <link rel="stylesheet" href="css/settings.css">
 </head>
-<body>
-    
+<body class="ui inverted segment">
+    <div class="ui secondary pointing menu" id="settingsMenu">
+        <a class="active item" data-page="mods">
+            Mods
+        </a>
+        <a class="item" data-page="options">
+            Game Options
+        </a>
+        <a class="item" data-page="l_options">
+            Launcher Options
+        </a>
+    </div>
+
+    <div class="settings-content">
+        <div class="tab-content" data-page="mods">
+            <div class="ui inverted relaxed divided list" id="modsList"></div>
+        </div>
+        <div class="tab-content" data-page="options">
+            <div class="ui form">
+                <div class="fluid field" data-setting="Xmx">
+                    <label>Xmx</label>
+                    <input placeholder="Xmx" type="text" id="settingXmx">
+                </div>
+                <div class="fluid field" data-setting="Xms">
+                    <label>Xms</label>
+                    <input placeholder="Xms" type="text" id="settingXms">
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" data-page="l_options">
+            <div class="ui toggle checkbox" style="position: inherit" id="settingBackground">
+                <label style="color: #FFF!important;">Use Background Videos</label>
+                <input type="checkbox" title="">
+            </div>
+        </div>
+        <div class="ui inverted section button-box">
+            <button class="ui inverted orange button" id="cancelButton" style="width: 168px">Cancel</button>
+            <button class="ui inverted blue   button" id="saveButton" style="width: 168px">Save</button>
+        </div>
+    </div>
+
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/semantic.min.js"></script>
+    <script>
+        const {ipcRenderer, remote} = require('electron');
+
+        $('.tab-content').hide();
+        $(`.tab-content[data-page="${$('.item.active').data('page')}"]`).show();
+
+        $('.ui.secondary.pointing.menu')
+            .on('click', '.item', function() {
+                let $this = $(this);
+                $this
+                    .addClass('active')
+                    .siblings('.item')
+                    .removeClass('active');
+                $('.tab-content').hide();
+                $(`.tab-content[data-page="${$this.data('page')}"]`).show();
+            });
+
+        const jfs = require('fs-jetpack');
+        const fs = jfs.cwd(remote.getCurrentWindow()["appdata"]);
+        let cfg;
+
+        fs.readAsync('.config', 'json')
+            .then(config => {
+                cfg = config;
+                //  GAME
+                let game = config.game;
+                let keys = Object.keys(game);
+                for(let i = 0; i < keys.length; i++) {
+                    let option = keys[i];
+                    $(`#setting\\${option}`).val(game[option]);
+                    console.log(`#setting${option}`);
+                }
+                // \GAME
+                $('#settingBackground').checkbox(config.bgtype === '.webm' ? 'check' : 'uncheck');
+                console.log(config.bgtype);
+            })
+            .then(() => {
+                for(let i = 0; i < mods.length; i++) {
+                    let mod = mods[i];
+                    $modsList.append(`
+                        <div class="item" data-modid="${mod.projectid}">
+                            <div class="content">
+                                <div class="header">
+                                    ${mod.name}
+                                    <div class="ui toggle checkbox" style="position: absolute;right: 5px;">
+                                        <input tabindex="0" class="hidden" type="checkbox" title="" ${mod.optional ? (cfg.ignored.indexOf(mod.projectid) === -1 ? 'checked' : '') : 'checked disabled'}>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    $('.ui.checkbox').checkbox();
+                }
+            });
+
+        let mods = remote.getCurrentWindow()["mods"];
+        mods.sort((a, b) => (a.name<b.name?-1:(a.name>b.name?1:0)));
+        let $modsList = $('#modsList');
+
+
+        $('#cancelButton').click(() => ipcRenderer.send('close-s'));
+        $('#saveButton').click(async () => {
+            let save = {
+                ignored: [],
+                game: {},
+                bgtype: $('#settingBackground').checkbox('is checked') ? '.webm' : '.jpg'
+            };
+
+            let $mods = $('[data-modid]');
+
+            for(let i = 0; i < $mods.length; i++) {
+                let $mod = $mods.eq(i);
+                let $box = $mod.find('>div>div>div');
+                if(!$box.checkbox('is checked'))
+                    save.ignored.push($mod.data('modid'));
+            }
+
+            let $settings = $('[data-setting]');
+
+            for(let i = 0; i < $settings.length; i++) {
+                let $setting = $settings.eq(i);
+                save.game[$setting.data('setting')] = $setting.find('input').val();
+            }
+
+            await fs.removeAsync('.config');
+            await fs.writeAsync('.config', JSON.stringify(save, null, 4));
+            ipcRenderer.send('close-s');
+        });
+    </script>
 </body>
 </html>

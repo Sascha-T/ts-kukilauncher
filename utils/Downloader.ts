@@ -1,8 +1,8 @@
 import * as ProgressBar from "electron-progressbar";
 import * as magnitude from "./Magnitude";
 import * as crypto from "crypto";
+import * as mkdir from 'mkdirp';
 import * as fetch from "node-fetch";
-import * as mkdir from "mkdirp";
 import * as path from "path";
 import * as jfs from "fs-jetpack";
 import * as fs from "fs";
@@ -12,6 +12,7 @@ import * as signale from 'signale';
 import {app} from "electron";
 
 import * as Dialog from './Dialog';
+import {Answer} from './Dialog';
 
 const bgcache = path.join(app.getPath("userData"), "background-cache");
 const log = signale.scope("Electron", "Download");
@@ -56,32 +57,29 @@ export async function checkBackgroundFiles(): Promise<void> {
 }
 
 export async function checkBackgroundCache(): Promise<DownloadResult> {
-    mkdir(bgcache);
-
-    let cx = await xfs.existsAsync(CacheDescriptor.VideoCache);
-    let cy = await xfs.existsAsync(CacheDescriptor.ImageCache);
-
-    if (cx) {
-        return {
-            files: await downloadAll(FileType.Video),
-            type: FileType.Video
-        };
-    } else if (cy) {
-        return {
-            files: await downloadAll(FileType.Image),
-            type: FileType.Image
-        };
-    } else {
+    let type: FileType = null;
+    if(await xfs.existsAsync(".config") === 'file') {
+        log.info("Config Already Exists");
+        let cfg = await xfs.readAsync('.config', 'json');
+        if(cfg && cfg["bgtype"])
+            type = cfg["bgtype"];
+    }
+    if(!type) {
+        log.info("!type");
         let answer: Dialog.Answer = Dialog.showQuestionDialog(
             "Do you want to download Server-specific Background Videos?",
             "Choosing 'No' will replace the video with static images!"
         );
-        if (answer == Dialog.Answer.Yes) {
-            await xfs.writeAsync(CacheDescriptor.VideoCache, (Math.round(Math.random()*1e9)).toString(16));
-        } else {
-            await xfs.writeAsync(CacheDescriptor.ImageCache, (Math.round(Math.random()*1e9)).toString(16));
-        }
-        return await checkBackgroundCache();
+        type = answer === Answer.Yes ? FileType.Video : FileType.Image;
+        await xfs.writeAsync('.config', JSON.stringify({bgtype: type}, null, 4));
+    }
+
+    mkdir(bgcache);
+    let files: string[] = await downloadAll(type);
+
+    return  {
+        type: type,
+        files: files
     }
 }
 

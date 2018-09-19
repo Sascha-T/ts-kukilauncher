@@ -1,12 +1,11 @@
 import {MinecraftVersion} from "./VersionUtil";
 import {DownloadHelper} from "./DownloadUtil";
-import * as fetch from 'node-fetch';
 import * as path from 'path';
 import * as uuid from 'uuid';
 import * as jfs from 'fs-jetpack';
 import * as log from 'signale';
 import * as ofs from 'fs';
-import {remote, ipcRenderer as ipc} from 'electron';
+import {ipcRenderer as ipc} from 'electron';
 import {SystemHelper, Paths} from "./Constants";
 import {LibraryHelper} from "./ForgeUtil";
 import {AuthenticationResult} from "./YggdrasilUtil";
@@ -24,15 +23,26 @@ export class MinecraftUtil {
 
     private classpath: string[] = [];
 
+    private config: object;
+
     constructor(version: MinecraftVersion) {
         this.version = version;
         this.native = path.join(SystemHelper.temp(), uuid.v4());
     }
 
+    public async getMods(): Promise<Mods.ModWrapper[]> {
+        await this.installManifest(StepCallback.create("", () => null, () => null));
+        let manifest: Mods.ModList = await fs.readAsync(`versions/${this.version.id}/kuki.json`, 'json');
+        return manifest.mods;
+    }
+
     public async launch(auth: AuthenticationResult): Promise<void> {
+        this.config = await jfs.readAsync(path.join(Paths.APPDATA.toString(), '.config'), 'json');
         let cp: string = this.classpath.join(SystemHelper.classpathSeparatorBecauseJavaIsFuckingStupid());
         let args: string[] = [];
         args.push('-Djava.library.path="' + this.native + '"');
+        args.push('-Xmx' + this.config["game"].Xmx);
+        args.push('-Xms' + this.config["game"].Xms);
         args.push('-cp');
         cp += ':/home/pascal/.config/kukilauncher/minecraft/minecraftforge.jar';
         args.push(`"${cp}"`);

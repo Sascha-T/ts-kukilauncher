@@ -57,6 +57,10 @@
   width: 100%;
   margin-bottom: 3.5px;
 }
+.login-field > input {
+  background-color: #222 !important;
+  color: #FFF !important;
+}
 
 .login-button {
   width: 100%;

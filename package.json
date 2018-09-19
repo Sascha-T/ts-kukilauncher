@@ -13,7 +13,6 @@
         "electron-fetch": "^1.2.1",
         "electron-packager": "^12.1.1",
         "electron-progressbar": "^1.1.0",
-        "extract-zip": "^1.6.7",
         "fs-jetpack": "^2.1.0",
         "gulp": "^3.9.1",
         "mkdirp": "^0.5.1",

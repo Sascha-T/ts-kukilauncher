@@ -61,8 +61,7 @@ ipc.on('settings', (_, mods) => {
 });
 ipc.on('close-s', () => {
     settings.close();
-    app.relaunch();
-    app.quit();
+    // Can you not relaunch. Please?
 });
 
 app.on('window-all-closed', () => {
